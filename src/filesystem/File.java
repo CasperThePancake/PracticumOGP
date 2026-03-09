@@ -1,8 +1,8 @@
-/*
+package filesystem;/*
 DISCUSSION BOARD
 
 __TODO implementatie__
-- We moeten de nodige JUnit tests maken! (FileTest.java)
+- We moeten de nodige JUnit tests maken! (filesystem.FileTest.java)
  */
 
 import be.kuleuven.cs.som.annotate.Basic;
@@ -13,8 +13,7 @@ import java.util.Date;
 /**
  * A basic file class for OGP Practicum 1
  *
- * @author Casper Vermeeren; Loïck Sansen; Wim Dekeyser
- * @version 1.0
+ * @author Casper Vermeeren; Loïck Sansen
  */
 public class File {
 
@@ -38,7 +37,7 @@ public class File {
     public File(String name) {
         this.setName(name,true);
         this.createTime = new Date();
-        this.modifyTime = new Date();
+        this.modifyTime = null;
         this.writable = true;
         this.setSize(0,true);
     }
@@ -68,13 +67,20 @@ public class File {
     }
 
     // Other methods
+    private static boolean isValidName(String name) {
+        return name.matches("[a-zA-Z0-9_.\\-]*");
+    }
+
+    private static String cleanIllegalName(String name) {
+        return name.replaceAll("[^a-zA-Z0-9_.\\-]", "");
+    }
 
     /**
      * Set the name for a file
      *
      * @post If given name only contains letters, numbers, dots, dashes, and underscores and is not empty, name is given name
      * @post If given name contains illegal characters, name is given name filtered from these illegal characters
-     * @post If given name or filtered given name is empty, name is 'New-File'
+     * @post If given name or filtered given name is empty, name is 'New-filesystem.File'
      *
      * @throws WriteException If file is not writable
      *      | !isWritable()
@@ -85,18 +91,18 @@ public class File {
         // Check if file writable
         if (this.isWritable()) {
             // Using regex to check if all characters in string are legal
-            if (name.matches("[a-zA-Z0-9_.\\-]*")) {
+            if (isValidName(name)) {
                 if (!name.isEmpty()) {
                     this.name = name;
                 } else {
-                    this.name = "New-File";
+                    this.name = "New-filesystem.File";
                 }
             } else {
-                String cleaned = name.replaceAll("[^a-zA-Z0-9_.\\-]", "");
+                String cleaned = cleanIllegalName(name);
                 if (!cleaned.isEmpty()) {
                     this.name = cleaned;
                 } else {
-                    this.name = "New-File";
+                    this.name = "New-filesystem.File";
                 }
             }
             // In any case the file name will have been changed, so update modified time
@@ -110,18 +116,18 @@ public class File {
     private void setName(String name, boolean ignoreWritability) {
         if (ignoreWritability) {
             // Using regex to check if all characters in string are legal
-            if (name.matches("[a-zA-Z0-9_.\\-]*")) {
+            if (isValidName(name)) {
                 if (!name.isEmpty()) {
                     this.name = name;
                 } else {
-                    this.name = "New-File";
+                    this.name = "New-filesystem.File";
                 }
             } else {
-                String cleaned = name.replaceAll("[^a-zA-Z0-9_.\\-]", "");
+                String cleaned = cleanIllegalName(name);
                 if (!cleaned.isEmpty()) {
                     this.name = cleaned;
                 } else {
-                    this.name = "New-File";
+                    this.name = "New-filesystem.File";
                 }
             }
         } else {
@@ -312,19 +318,18 @@ public class File {
      * @param other The other file to compare with
      */
     public boolean hasOverlappingUsePeriod(File other) { // TOTAAL PROGRAMMEREN
-        if (other != null) {
-            // If one of the files hasn't been used yet, always return false
-            if (this.getCreateTime() == this.getModifyTime() || other.getCreateTime() == other.getModifyTime()) {
-                return false;
-            }
-            // First, determine which file is the oldest
-            if (this.getCreateTime().after(other.getCreateTime())) { // Other is oldest
-                return other.getModifyTime().after(this.getCreateTime());
-            } else { // This is oldest
-                return this.getModifyTime().after(other.getCreateTime());
-            }
-        } else {
+        if (other == null) {
             return false;
+        }
+        // If one of the files hasn't been used yet, always return false
+        if (this.getModifyTime() == null || other.getModifyTime() == null) {
+            return false;
+        }
+        // First, determine which file is the oldest
+        if (this.getCreateTime().after(other.getCreateTime())) { // Other is oldest
+            return other.getModifyTime().after(this.getCreateTime());
+        } else { // This is oldest
+            return this.getModifyTime().after(other.getCreateTime());
         }
     }
 }

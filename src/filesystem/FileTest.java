@@ -1,3 +1,5 @@
+package filesystem;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,6 +8,11 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing class for the filesystem.File class
+ *
+ * @author Casper Vermeeren; Loïck Sansen
+ */
 public class FileTest {
 
     @BeforeAll
@@ -88,6 +95,7 @@ public class FileTest {
     public void setWritableTest() {
         File testFile = new File("myWritableFile");
         testFile.setWritable(false);
+
         assertFalse(testFile.isWritable());
     }
 
@@ -97,5 +105,16 @@ public class FileTest {
             File testFile = new File("mySafeFile",44,false);
             testFile.enlarge(50);
         });
+    }
+
+    @Test
+    public void testConstructorDefault() {
+        File testFile = new File("test.txt");
+
+        assertEquals("test.txt",testFile.getName());
+        assertEquals(0,testFile.getSize());
+        assertTrue(testFile.isWritable());
+        assertNull(testFile.getModifyTime());
+        assertNotNull(testFile.getCreateTime());
     }
 }
