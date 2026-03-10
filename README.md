@@ -7,24 +7,24 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Waar is Wim
 
 ## Bestanden (File.java)
-- [ ] File types (met Enum)
+- [ ] File types (met Enum) ⚡⚡
 
 ## Mappen (Directory.java)
-- [ ] Representatie (attributen)
-- [ ] Constructoren
-- [ ] Bidirectionele associatie met bestanden
-- [ ] Methode: getNbItems()
-- [ ] Methode: getItemAt(Int positie)
-- [ ] Methode: getItem(String naam)
-- [ ] Methode: hasAsItem(File file / Folder folder / Link link)
-- [ ] Methode: makeRoot()
-- [ ] Afhandeling van schrijfrecht
+- [ ] Representatie (attributen) ⚡
+- [ ] Constructoren ⚡
+- [ ] Bidirectionele associatie met bestanden ⚡⚡⚡
+- [ ] Methode: getNbItems() ⚡
+- [ ] Methode: getItemAt(Int positie) ⚡
+- [ ] Methode: getItem(String naam) ⚡
+- [ ] Methode: hasAsItem(File file / Folder folder / Link link) ⚡
+- [ ] Methode: makeRoot() ⚡
+- [ ] Afhandeling van schrijfrecht ⚡⚡
 
 ## Links (Link.java)
-- [ ] Representatie (attributen)
-- [ ] Constructoren
-- [ ] Unidirectionele associatie met bestanden of mappen
-- [ ] Correcte afhandeling van verwijderde links/bestanden/mappen
+- [ ] Representatie (attributen) ⚡
+- [ ] Constructoren ⚡
+- [ ] Unidirectionele associatie met bestanden of mappen ⚡⚡⚡
+- [ ] Correcte afhandeling van verwijderde links/bestanden/mappen ⚡⚡⚡⚡
 
 ## Lijst van nodige constructoren
 - [ ] File(dir, name, size, writable, type)
@@ -36,11 +36,11 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [ ] Directory(name)
 
 ## Algemeen
-- [ ] Bestanden, folders en links verwijderen (als schrijfbaar en leeg)
-- [ ] Bijhouden van creation/modification data voor alle items
-- [ ] Uitwerken van hasOverlappingUsePeriod(.) voor alle items
-- [ ] Methode: move(.)
-- [ ] Methode: getRoot()
-- [ ] Methode: isDirectOrIndirectChildOf(.)
-- [ ] Methode: getTotalDiskUsage()
-- [ ] Methode: getAbsolutePath()
+- [ ] Bestanden, folders en links verwijderen (als schrijfbaar en leeg) ⚡⚡
+- [ ] Bijhouden van creation/modification data voor alle items ⚡
+- [ ] Uitwerken van hasOverlappingUsePeriod(.) voor alle items ⚡
+- [ ] Methode: move(.) ⚡
+- [ ] Methode: getRoot() ⚡⚡⚡
+- [ ] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
+- [ ] Methode: getTotalDiskUsage() ⚡
+- [ ] Methode: getAbsolutePath() ⚡⚡
