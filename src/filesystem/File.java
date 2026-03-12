@@ -14,6 +14,7 @@ public class File extends Item {
 
     private int size;
     private static final int maxSize = Integer.MAX_VALUE;
+    private final FileExtension fileExtension;
 
     // Constructors
 
@@ -25,9 +26,10 @@ public class File extends Item {
      *
      * @param name The name for the file
      */
-    public File(String name) {
+    public File(String name, FileExtension fileExtension) {
         super(name,true);
         this.setSize(0,true);
+        this.fileExtension = fileExtension;
     }
 
     /**
@@ -46,12 +48,23 @@ public class File extends Item {
      * @param size The size for the file
      * @param writable The writability for the file
      */
-    public File(String name, int size, boolean writable) {
+    public File(String name, int size, boolean writable, FileExtension fileExtension) {
         super(name,writable);
         this.setSize(size,true);
+        this.fileExtension = fileExtension;
     }
 
     // Other methods
+
+    /**
+     * Get the file extension of the file
+     *
+     * @return File extension of the file
+     */
+    public FileExtension getFileExtension() {
+        return fileExtension;
+    }
+
     /**
      * Returns whether the given size is a valid size
      *
