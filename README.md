@@ -6,11 +6,13 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 
 - [x] Waar is Wim
 
+- [ ] Fouten feedback practicum 1 aanpassen ⚡⚡
+
 ## Superklasse (Item.java)
 - [x] Aanmaken
 - [x] Gedeelde oude implementatie van File, Directory en Link hier inbrengen (CTRL+C, CTRL+V)
 - [x] File correct doen overerven van nieuwe superklasse en enkel eigen nieuwe methodes/attributen meegeven
-- [ ] Nieuwe implementaties die File, Directory en Link delen hier toevoegen!
+- [ ] Nieuwe implementaties die File, Directory en Link delen hier toevoegen! ⚡⚡⚡
 
 ## Bestanden (File.java)
 - [x] File types (met Enum) ⚡⚡
