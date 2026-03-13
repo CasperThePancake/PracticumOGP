@@ -6,7 +6,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 
 - [x] Waar is Wim
 
-- [ ] Fouten feedback practicum 1 aanpassen ⚡⚡
+- [ ] Fouten feedback practicum 1 aanpassen ⚡⚡ (Loïck)
 
 ## Superklasse (Item.java)
 - [x] Aanmaken
