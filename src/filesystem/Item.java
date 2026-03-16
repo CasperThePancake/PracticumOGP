@@ -216,7 +216,7 @@ public abstract class Item {
      * @post Modify time is current time
      *      | new.getModifyTime() == new Date()
      */
-    public void setModifyTime() { // TOTAAL PROGRAMMEREN
+    public void setModifyTime() {
         this.modifyTime = new Date();
     }
 

@@ -39,6 +39,7 @@ public class File extends Item {
      *      | setWritable(true)
      *
      * @param name The name for the file
+     * @param fileExtension The file extension of the file
      */
     @Raw
     public File(String name, FileExtension fileExtension) {
@@ -60,6 +61,7 @@ public class File extends Item {
      * @param name The name for the file
      * @param size The size for the file
      * @param writable The writability for the file
+     * @param fileExtension The file extension of the file
      */
     @Raw
     public File(String name, int size, boolean writable, FileExtension fileExtension) {
@@ -128,13 +130,12 @@ public class File extends Item {
      * @throws WriteException If file is not writable
      *      | !isWritable()
      */
-    public void changeSize(int size) throws WriteException {
-        if (this.isWritable()) {
-            this.setSize(size);
-            this.setModifyTime();
-        } else {
-            throw new WriteException("This file is read-only!");
+    public void changeSize(int size) throws IllegalStateException {
+        if (!this.isWritable()) {
+            throw new IllegalStateException("File is not writable");
         }
+        this.size = size;
+        this.setModifyTime();
     }
 
     /**
