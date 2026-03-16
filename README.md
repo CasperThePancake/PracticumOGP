@@ -8,7 +8,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 
 - [x] Fouten feedback practicum 1 aanpassen ⚡⚡ (Loïck)
 
-## Superklasse (Item.java)
+## Superklasse (Item.java) _BEIDE_
 - [x] Aanmaken
 - [x] Gedeelde oude implementatie van File, Directory en Link hier inbrengen (CTRL+C, CTRL+V)
 - [x] File correct doen overerven van nieuwe superklasse en enkel eigen nieuwe methodes/attributen meegeven
@@ -29,26 +29,26 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [ ] Methode: makeRoot() ⚡
 - [ ] Afhandeling van schrijfrecht ⚡⚡
 
-## Links (Link.java) _LOÏCK _
+## Links (Link.java) _LOÏCK_
 - [x] Subklasse van Item
 - [ ] Representatie (attributen) ⚡
 - [ ] Constructoren ⚡
 - [ ] Unidirectionele associatie met bestanden of mappen ⚡⚡⚡
 - [ ] Correcte afhandeling van verwijderde links/bestanden/mappen ⚡⚡⚡⚡
 
-## Lijst van nodige constructoren
-- [ ] File(dir, name, size, writable, type)
-- [ ] File(dir, name, type)
+## Lijst van nodige constructoren _BEIDE_
+- [x] File(dir, name, size, writable, type)
+- [x] File(dir, name, type)
 - [ ] Link(dir, name, linkedItem)
 - [ ] Directory(dir, name, writable)
 - [ ] Directory(dir, name)
 - [ ] Directory(name, writable)
 - [ ] Directory(name)
 
-## Algemeen
+## Algemeen (dingen voor in Item.java) _BEIDE_
 - [ ] Bestanden, folders en links verwijderen (als schrijfbaar en leeg) ⚡⚡
-- [ ] Bijhouden van creation/modification data voor alle items ⚡
-- [ ] Uitwerken van hasOverlappingUsePeriod(.) voor alle items ⚡
+- [x] Bijhouden van creation/modification data voor alle items ⚡
+- [x] Uitwerken van hasOverlappingUsePeriod(.) voor alle items ⚡
 - [ ] Methode: move(.) ⚡
 - [ ] Methode: getRoot() ⚡⚡⚡
 - [ ] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
