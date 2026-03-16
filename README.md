@@ -6,7 +6,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 
 - [x] Waar is Wim
 
-- [ ] Fouten feedback practicum 1 aanpassen ⚡⚡ (Loïck)
+- [x] Fouten feedback practicum 1 aanpassen ⚡⚡ (Loïck)
 
 ## Superklasse (Item.java)
 - [x] Aanmaken
@@ -29,7 +29,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [ ] Methode: makeRoot() ⚡
 - [ ] Afhandeling van schrijfrecht ⚡⚡
 
-## Links (Link.java)
+## Links (Link.java) _LOÏCK _
 - [x] Subklasse van Item
 - [ ] Representatie (attributen) ⚡
 - [ ] Constructoren ⚡
@@ -54,3 +54,4 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [ ] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
 - [ ] Methode: getTotalDiskUsage() ⚡
 - [ ] Methode: getAbsolutePath() ⚡⚡
+- [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
