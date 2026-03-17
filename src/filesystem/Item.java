@@ -28,6 +28,7 @@ public abstract class Item {
     private Date createTime = null;
     private Date modifyTime = null;
     private boolean writable = true;
+    private Directory parentDirectory = null;
 
     // =================================================================================
     // Constructors
@@ -49,12 +50,83 @@ public abstract class Item {
      *
      * @param writable Given writability for the item
      */
-    public Item(String name, boolean writable) {
+    public Item(String name, boolean writable, Directory directory) {
         this.setName(name);
         this.setWritable(writable);
         this.setCreateTime();
         this.modifyTime = null;
+        this.move(directory);
     }
+
+    /**
+     *
+     * @param internal Whether or not this item is for internal use only
+     *
+     * @note Used for creating NULLFOLDER (package-private)
+     */
+    Item(boolean internal) {
+        this.parentDirectory = null;
+    }
+
+    // =================================================================================
+    // Parent directory
+    // =================================================================================
+
+    public Directory getParentDirectory() {
+        return parentDirectory;
+    }
+
+    private void setParentDirectory(Directory parentDirectory) {
+        this.parentDirectory = parentDirectory;
+    }
+
+    public boolean canHaveAsParentDirectory(Directory parentDirectory) {
+        // Valid parentDirectory?
+        if (parentDirectory == null) {
+            return false;
+        }
+
+        // Cannot put something in itself
+        if (this == parentDirectory) {
+            return false;
+        }
+
+        // parentdirectory cannot already contain something with the same name
+        if (parentDirectory.getItem(this.getName()) != null) {
+            return false;
+        }
+
+        // parentDirectory cannot be one of your own children (only meant for directories, but will just be false if this=file/link)
+        if (parentDirectory.isDirectOrIndirectChildOf(this)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isDirectOrIndirectChildOf(Item potentialParent) {
+        if (this == potentialParent) {
+            return true;
+        }
+
+        if (this == Directory.NULL_ROOT) {
+            return false;
+        }
+
+        return this.getParentDirectory().isDirectOrIndirectChildOf(potentialParent);
+    }
+
+    public void move(Directory targetDirectory) {
+        if (canHaveAsParentDirectory(targetDirectory)) {
+            // Already in a folder? Remove me from that folder!
+            if (this.getParentDirectory() != null) {
+                this.getParentDirectory().removeItem(this);
+                this.setParentDirectory(targetDirectory);
+                targetDirectory.addItem(this);
+            }
+        }
+    }
+
 
     // =================================================================================
     // Name
@@ -98,7 +170,7 @@ public abstract class Item {
      *
      * @param name The given name for the item
      */
-    @Model
+    @Model @Raw
     private void setName(String name) {
             if (isValidName(name)) {
                 if (!name.isEmpty()) {
@@ -129,7 +201,11 @@ public abstract class Item {
      */
     public void changeName(String name) throws WriteException {
         if (this.isWritable()) {
+            // Remove and re-add this item after name is changed so that it is put in the right lexicographical place again (ordered directory)
+            Directory currentParent = this.getParentDirectory();
+            currentParent.removeItem(this);
             this.setName(name);
+            currentParent.addItem(this);
             this.setModifyTime();
         } else {
             throw new WriteException("This file is read-only!");
@@ -264,5 +340,10 @@ public abstract class Item {
         }
         // Check overlap
         return other.getCreateTime().before(this.getModifyTime()) && other.getModifyTime().after(this.getCreateTime());
+    }
+
+    // Check if this item belongs before other item in an ordered list (like for use in directory's alphabetical sort)
+    public boolean lexicographicallyBelongsBefore(Item other) {
+        return this.getName().compareToIgnoreCase(other.getName()) < 0;
     }
 }

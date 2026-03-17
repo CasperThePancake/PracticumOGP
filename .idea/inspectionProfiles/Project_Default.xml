@@ -7,7 +7,7 @@
       </Languages>
     </inspection_tool>
     <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="ADDITIONAL_TAGS" value="post,pre,effect" />
+      <option name="ADDITIONAL_TAGS" value="post,pre,effect,note" />
     </inspection_tool>
     <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">

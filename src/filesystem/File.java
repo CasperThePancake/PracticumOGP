@@ -42,8 +42,8 @@ public class File extends Item {
      * @param fileExtension The file extension of the file
      */
     @Raw
-    public File(String name, FileExtension fileExtension) {
-        this(name,0,true,fileExtension);
+    public File(Directory parentDirectory, String name, FileExtension fileExtension) {
+        this(parentDirectory,name,0,true,fileExtension);
     }
 
     /**
@@ -64,8 +64,8 @@ public class File extends Item {
      * @param fileExtension The file extension of the file
      */
     @Raw
-    public File(String name, int size, boolean writable, FileExtension fileExtension) {
-        super(name,writable);
+    public File(Directory parentDirectory, String name, int size, boolean writable, FileExtension fileExtension) {
+        super(name,writable,parentDirectory);
         this.setSize(size);
         this.fileExtension = fileExtension;
     }
