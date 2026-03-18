@@ -12,7 +12,6 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Aanmaken
 - [x] Gedeelde oude implementatie van File, Directory en Link hier inbrengen (CTRL+C, CTRL+V)
 - [x] File correct doen overerven van nieuwe superklasse en enkel eigen nieuwe methodes/attributen meegeven
-- [ ] Nieuwe implementaties die File, Directory en Link delen hier toevoegen! ⚡⚡⚡
 
 ## Bestanden (File.java)
 - [x] File types (met Enum) ⚡⚡
@@ -27,6 +26,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: getItem(String naam) ⚡
 - [x] Methode: hasAsItem(File file / Folder folder / Link link) ⚡
 - [x] Methode: makeRoot() ⚡
+- [x] Methode: containsDiskItemWithName(String naam) ⚡
 - [ ] Afhandeling van schrijfrecht ⚡⚡
 
 ## Links (Link.java) _LOÏCK_
@@ -50,8 +50,8 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Bijhouden van creation/modification data voor alle items ⚡
 - [x] Uitwerken van hasOverlappingUsePeriod(.) voor alle items ⚡
 - [x] Methode: move(.) ⚡
-- [ ] Methode: getRoot() ⚡⚡⚡
+- [x] Methode: getRoot() ⚡⚡⚡
 - [x] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
-- [ ] Methode: getTotalDiskUsage() ⚡
-- [ ] Methode: getAbsolutePath() ⚡⚡
+- [x] Methode: getTotalDiskUsage() ⚡
+- [x] Methode: getAbsolutePath() ⚡⚡
 - [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
