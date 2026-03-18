@@ -28,7 +28,8 @@ public class FileTest {
 
     @Test
     public void fileCreationTest() {
-        File testFile = new File("myEpicMovie",2048,false,FileExtension.PDF);
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"myEpicMovie",2048,false,FileExtension.PDF);
 
         assertEquals("myEpicMovie",testFile.getName());
         assertEquals(2048,testFile.getSize());
@@ -38,30 +39,34 @@ public class FileTest {
 
     @Test
     public void illegalNameTest() {
-        File testFile = new File("Adam&Eve",FileExtension.TXT);
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"Adam&Eve",FileExtension.TXT);
 
         assertEquals("AdamEve",testFile.getName());
     }
 
     @Test
     public void enlargeTest() {
-        File testFile = new File("toBeEnlarged",90,true,FileExtension.PDF);
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"toBeEnlarged",90,true,FileExtension.PDF);
         testFile.enlarge(10);
         assertEquals(100,testFile.getSize());
     }
 
     @Test
     public void shortenTest() {
-        File testFile = new File("toBeShortened",110,true,FileExtension.PDF);
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"toBeShortened",110,true,FileExtension.PDF);
         testFile.shorten(10);
         assertEquals(100,testFile.getSize());
     }
 
     @Test
     public void overlapTest1() throws InterruptedException {
-        File testFile1 = new File("FirstFile",FileExtension.JAVA);
+        Directory rootDir = new Directory("root");
+        File testFile1 = new File(rootDir,"FirstFile",FileExtension.JAVA);
         sleep(50);
-        File testFile2 = new File("SecondFile",FileExtension.JAVA);
+        File testFile2 = new File(rootDir,"SecondFile",FileExtension.JAVA);
         sleep(50);
         testFile2.changeSize(10);
 
@@ -70,9 +75,10 @@ public class FileTest {
 
     @Test
     public void overlapTest2() throws InterruptedException {
-        File testFile1 = new File("FirstFile",FileExtension.JAVA);
+        Directory rootDir = new Directory("root");
+        File testFile1 = new File(rootDir,"FirstFile",FileExtension.JAVA);
         sleep(50);
-        File testFile2 = new File("SecondFile",FileExtension.JAVA);
+        File testFile2 = new File(rootDir,"SecondFile",FileExtension.JAVA);
         sleep(50);
         testFile2.changeSize(10);
         sleep(50);
@@ -83,11 +89,12 @@ public class FileTest {
 
     @Test
     public void overlapTest3() throws InterruptedException {
-        File testFile1 = new File("FirstFile",FileExtension.JAVA);
+        Directory rootDir = new Directory("root");
+        File testFile1 = new File(rootDir,"FirstFile",FileExtension.JAVA);
         sleep(50);
         testFile1.changeSize(15);
         sleep(50);
-        File testFile2 = new File("SecondFile",FileExtension.JAVA);
+        File testFile2 = new File(rootDir,"SecondFile",FileExtension.JAVA);
         sleep(50);
         testFile2.changeSize(10);
 
@@ -96,7 +103,8 @@ public class FileTest {
 
     @Test
     public void setWritableTest() {
-        File testFile = new File("myWritableFile",FileExtension.PDF);
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"myWritableFile",FileExtension.PDF);
         testFile.setWritable(false);
 
         assertFalse(testFile.isWritable());
@@ -105,14 +113,16 @@ public class FileTest {
     @Test
     public void illegalWritingTest() {
         assertThrows(WriteException.class, () -> {
-            File testFile = new File("mySafeFile",44,false,FileExtension.JAVA);
+            Directory rootDir = new Directory("root");
+            File testFile = new File(rootDir,"mySafeFile",44,false,FileExtension.JAVA);
             testFile.enlarge(50);
         });
     }
 
     @Test
     public void testConstructorDefault() {
-        File testFile = new File("test",FileExtension.TXT);
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"test",FileExtension.TXT);
 
         assertEquals("test",testFile.getName());
         assertEquals(0,testFile.getSize());

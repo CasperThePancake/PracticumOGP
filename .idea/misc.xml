@@ -5,12 +5,12 @@
     <option name="description" value="" />
   </component>
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../Coding/Java/OGP/javadocs/Practicum1" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Coding/Java/OGP/javadocs/Practicum1" />
     <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
     <option name="OPTION_DOCUMENT_TAG_VERSION" value="true" />
     <option name="OTHER_OPTIONS" value="-tagletpath C:/Users/verme/Documents/Coding/Java/OGP/AnnotationsDoclets.jar  -taglet be.kuleuven.cs.som.taglet.InvarTaglet   -taglet be.kuleuven.cs.som.taglet.PreTaglet  -taglet be.kuleuven.cs.som.taglet.ThrowsTaglet   -taglet be.kuleuven.cs.som.taglet.PostTaglet  -taglet be.kuleuven.cs.som.taglet.EffectTaglet   -taglet be.kuleuven.cs.som.taglet.NoteTaglet  -taglet be.kuleuven.cs.som.taglet.ReturnTaglet   -Xdoclint:none  -link https://docs.oracle.com/en/java/javase/25/docs/api/" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_24" project-jdk-name="25" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" project-jdk-name="25" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

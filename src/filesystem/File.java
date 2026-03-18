@@ -177,4 +177,30 @@ public class File extends Item {
     public int getSize() {
         return size;
     }
+
+    // =================================================================================
+    // Other methods
+    // =================================================================================
+
+    /**
+     * Get the absolute file path for this file
+     *
+     * @return String absolute file path for this file
+     *      | ????????
+     */
+    @Override
+    public String getAbsolutePath() {
+        return getParentDirectory().getAbsolutePath()+"/"+getName()+"."+getFileExtension().getSuffix();
+    }
+
+    /**
+     * Get the total disk usage for this file
+     *
+     * @return Total disk usage for this file
+     *      | bro
+     */
+    @Override
+    public int getTotalDiskUsage() {
+        return getSize();
+    }
 }

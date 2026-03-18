@@ -19,6 +19,9 @@ import java.util.Date;
  *
  * @invar The name of the item must always be valid
  *      | isValidName(getName())
+ *
+ * @invar The parentDirectory of the item must always be valid
+ *      | canHaveAsParentDirectory(getParentDirectory())
  */
 public abstract class Item {
     // =================================================================================
@@ -59,10 +62,12 @@ public abstract class Item {
     }
 
     /**
+     * Create an internal item placeholder
      *
-     * @param internal Whether or not this item is for internal use only
+     * @param internal Whether this item is for internal use only
      *
-     * @note Used for creating NULLFOLDER (package-private)
+     * @note Used for creating NULL_ROOT placeholder as parentDirectory for root directories
+     * @note This method is package-private to prevent users from using it
      */
     Item(boolean internal) {
         this.parentDirectory = null;
@@ -72,14 +77,39 @@ public abstract class Item {
     // Parent directory
     // =================================================================================
 
+    /**
+     * Get the parent directory for this item
+     *
+     * @return Null if item is root, parent directory otherwise
+     *      | hoe de fuck formeel
+     *
+     * @note We are careful here to not return the NULL_ROOT object to the user, as letting them have access to it could break everything
+     */
+    @Raw
     public Directory getParentDirectory() {
+        if (parentDirectory == Directory.NULL_ROOT) {
+            return null;
+        }
         return parentDirectory;
     }
 
+    /**
+     * Set the parent directory for this item
+     *
+     * @param parentDirectory The directory to set as parent for this item
+     */
     private void setParentDirectory(Directory parentDirectory) {
         this.parentDirectory = parentDirectory;
     }
 
+    /**
+     * Returns whether given directory can be a parent directory of this item
+     *
+     * @param parentDirectory Parent directory to check
+     *
+     * @return True if given directory is not null and given directory is not this item and given directory does not contain something with this item's name and given directory is not child of this item; false otherwise
+     *      | parentDirectory != null && parentDirectory != this && parentDirectory.getItem(this.name()) == null && !parentDirectory.isDirectOrIndirectChildOf(this)
+     */
     public boolean canHaveAsParentDirectory(Directory parentDirectory) {
         // Valid parentDirectory?
         if (parentDirectory == null) {
@@ -92,7 +122,7 @@ public abstract class Item {
         }
 
         // parentdirectory cannot already contain something with the same name
-        if (parentDirectory.getItem(this.getName()) != null) {
+        if (parentDirectory.containsDiskItemWithName(this.getName())) {
             return false;
         }
 
@@ -104,6 +134,14 @@ public abstract class Item {
         return true;
     }
 
+    /**
+     * Checks recursively whether this item is a direct or indirect child of the given potentialParent item
+     *
+     * @param potentialParent Given potential parent item
+     *
+     * @return True if given potentialParent is this item or parent directory of this item is direct or indirect child of given potentialParent
+     *      | this == potentialParent || this.getParentDirectory().isDirectOrIndirectChildOf(potentialParent)
+     */
     public boolean isDirectOrIndirectChildOf(Item potentialParent) {
         if (this == potentialParent) {
             return true;
@@ -113,20 +151,50 @@ public abstract class Item {
             return false;
         }
 
-        return this.getParentDirectory().isDirectOrIndirectChildOf(potentialParent);
+        return parentDirectory.isDirectOrIndirectChildOf(potentialParent); // Don't use getter here because that one hides NULL_ROOT
     }
 
-    public void move(Directory targetDirectory) {
+    /**
+     * Move this item to the given targetDirectory
+     *
+     * @throws MoveException If this item cannot belong to the given targetDirectory
+     *      | !canHaveAsParentDirectory(targetDirectory)
+     *
+     * @post If this item was already in a directory, remove this item from that directory
+     *      | !this.getParentDirectory().hasAsItem(new)
+     *
+     * @post This item is added to given targetDirectory
+     *      | targetDirectory().hasAsItem(new)
+     *
+     * @post This item's parentDirectory becomes targetDirectory
+     *      | new.getParentDirectory() == targetDirectory
+     *
+     * @param targetDirectory Target directory to move this item to
+     */
+    public void move(Directory targetDirectory) throws MoveException {
         if (canHaveAsParentDirectory(targetDirectory)) {
             // Already in a folder? Remove me from that folder!
             if (this.getParentDirectory() != null) {
                 this.getParentDirectory().removeItem(this);
-                this.setParentDirectory(targetDirectory);
-                targetDirectory.addItem(this);
             }
+            this.setParentDirectory(targetDirectory);
+            targetDirectory.addItem(this);
+        } else {
+            throw new MoveException("Item is unable to be moved into that directory!");
         }
     }
 
+    /**
+     * Finds the root directory this item is directly or indirectly a child of
+     *
+     * @return The root directory this item is directly or indirectly a child of
+     *      | bloedje wtf dit kan ik nu toch echt ni formeel doen
+     */
+    public Directory getRoot() {
+        return getParentDirectory().getRoot(); // For any non-directory item, you'll have to recurse up (this method is overwritten for directory!)
+    }
+
+    public abstract String getAbsolutePath();
 
     // =================================================================================
     // Name
@@ -343,7 +411,21 @@ public abstract class Item {
     }
 
     // Check if this item belongs before other item in an ordered list (like for use in directory's alphabetical sort)
+
+    /**
+     * Check if this item lexicographically belongs before given other item in an ordered directory
+     *
+     * @pre Given other item is not null
+     *      | other != null
+     *
+     * @param other Other item to compare with
+     *
+     * @return True if this item lexicographically belongs before given other item; false otherwise
+     *      | getName().compareToIgnoreCase(other.getName()) < 0
+     */
     public boolean lexicographicallyBelongsBefore(Item other) {
         return this.getName().compareToIgnoreCase(other.getName()) < 0;
     }
+
+    public abstract int getTotalDiskUsage();
 }
