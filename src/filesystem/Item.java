@@ -15,7 +15,7 @@ import java.util.Date;
  *       | isValidCreationTime(getCreationTime())
  *
  * @invar The modification time must always be valid
- *       | canHaveAsModificationTime(getModificationTime())
+ *       | isValidModifyTime(getModificationTime())
  *
  * @invar The name of the item must always be valid
  *      | isValidName(getName())
