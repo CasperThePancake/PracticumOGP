@@ -151,6 +151,7 @@ public class Link extends Item {
     @Override
     public void delete() throws DeleteException {
         if (canBeDeleted()) {
+            getParentDirectory().removeItem(this);
             setTerminated(true);
         } else {
             throw new DeleteException("This link cannot be deleted!");

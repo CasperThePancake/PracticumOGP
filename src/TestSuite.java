@@ -7,11 +7,14 @@ import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Testing class for the filesystem.File class
+ * Testing suite for the filesystem package, testing all method cases
  *
  * @author Casper Vermeeren; Loïck Sansen
  */
 public class TestSuite {
+    // =================================================================================
+    // Before tests
+    // =================================================================================
 
     @BeforeAll
     public static void BeforeAllTests() {
@@ -23,6 +26,9 @@ public class TestSuite {
         // Stuff to run before each test begins
     }
 
+    // =================================================================================
+    // Tests: File
+    // =================================================================================
     @Test
     public void fileCreationTest() {
         Directory rootDir = new Directory("root");
@@ -126,5 +132,351 @@ public class TestSuite {
         assertTrue(testFile.isWritable());
         assertNull(testFile.getModifyTime());
         assertNotNull(testFile.getCreateTime());
+    }
+
+    @Test
+    public void testDeleteFile1() {
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"test",FileExtension.TXT);
+        testFile.delete();
+
+        assertFalse(rootDir.hasAsItem(testFile));
+    }
+
+    @Test
+    public void testDeleteFile2() {
+        assertThrows(IllegalStateException.class, () -> {
+            Directory rootDir = new Directory("root");
+            File testFile = new File(rootDir,"testy",44,true,FileExtension.JAVA);
+            testFile.delete();
+            testFile.enlarge(50);
+        });
+    }
+
+    @Test
+    public void filePathTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+        File testFile = new File(myDir,"test",FileExtension.TXT);
+
+        assertEquals("/root/documents/test.txt",testFile.getAbsolutePath());
+    }
+
+    @Test
+    public void defaultNameTest() {
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"",FileExtension.TXT);
+
+        assertEquals("New-File",testFile.getName());
+    }
+
+    @Test
+    public void fileDiskUsageCheck() {
+        Directory rootDir = new Directory("root");
+        File testFile = new File(rootDir,"",40,true,FileExtension.TXT);
+
+        assertEquals(40,testFile.getTotalDiskUsage());
+    }
+
+    // =================================================================================
+    // Tests: Directory
+    // =================================================================================
+
+    @Test
+    public void directoryConstructorTest1() {
+        Directory rootDir = new Directory("root");
+        assertTrue(rootDir.isRoot());
+        assertNull(rootDir.getParentDirectory());
+    }
+
+    @Test
+    public void directoryConstructorTest2() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        assertEquals(rootDir,myDir.getParentDirectory());
+        assertTrue(myDir.isWritable());
+        assertEquals("documents",myDir.getName());
+    }
+
+    @Test
+    public void directoryIllegalNameTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"docu.ments");
+
+        assertEquals("documents",myDir.getName());
+    }
+
+    @Test
+    public void makeRootTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        myDir.makeRoot();
+
+        assertFalse(rootDir.hasAsItem(myDir));
+        assertNull(myDir.getParentDirectory());
+        assertTrue(myDir.isRoot());
+    }
+
+    @Test
+    public void directoryAddItemTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+
+        myFile.move(myDir);
+
+        assertFalse(rootDir.hasAsItem(myFile));
+        assertTrue(myDir.hasAsItem(myFile));
+    }
+
+    @Test
+    public void directoryNbItemsTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory("documents");
+
+        File myFile1 = new File(rootDir,"secret1",FileExtension.TXT);
+        File myFile2 = new File(rootDir,"secret2",FileExtension.TXT);
+        File myFile3 = new File(rootDir,"secret3",FileExtension.TXT);
+        File myFile4 = new File(rootDir,"secret4",FileExtension.TXT);
+
+        myFile1.move(myDir);
+
+        assertEquals(3,rootDir.getNbItems());
+    }
+
+    @Test
+    public void illegalMoveTest1() {
+        assertThrows(MoveException.class, () -> {
+            Directory rootDir = new Directory("root");
+            Directory myDir = new Directory(rootDir,"documents");
+            Directory myLowerDir = new Directory(myDir,"OGP");
+
+            myDir.move(myLowerDir);
+        });
+    }
+
+    @Test
+    public void illegalMoveTest2() {
+        assertThrows(MoveException.class, () -> {
+            Directory rootDir = new Directory("root");
+            File myFile = new File(rootDir,"secret",FileExtension.TXT);
+            Directory myDir = new Directory(rootDir,"documents");
+            File mySameFile = new File(myDir,"secret",FileExtension.TXT);
+
+            mySameFile.move(rootDir);
+        });
+    }
+
+    @Test
+    public void directoryContainsTest1() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(myDir,"secret",FileExtension.TXT);
+
+        assertTrue(myDir.containsDiskItemWithName("secret"));
+    }
+
+    @Test
+    public void directoryContainsTest2() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(myDir,"secret",FileExtension.TXT);
+
+        assertEquals(myFile,myDir.getItem("secret"));
+    }
+
+    @Test
+    public void directoryContainsTest3() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(myDir,"secret",FileExtension.TXT);
+
+        assertNull(myDir.getItem("thisfiledoesnotexist"));
+    }
+
+    @Test
+    public void directoryContainsTest4() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(myDir,"secret",FileExtension.TXT);
+
+        assertEquals(myFile,myDir.getItemAt(1));
+    }
+
+    @Test
+    public void directoryContainsTest5() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(myDir,"secret",FileExtension.TXT);
+        File myOtherFile = new File(rootDir,"assignment",FileExtension.PDF);
+
+        assertTrue(myDir.hasAsItem(myFile));
+        assertFalse(myDir.hasAsItem(myOtherFile));
+        assertTrue(rootDir.hasAsItem(myOtherFile));
+        assertFalse(rootDir.hasAsItem(myFile));
+    }
+
+    @Test
+    public void getRootTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+        Directory myOtherDir = new Directory(myDir,"OGP");
+
+        File myFile = new File(myOtherDir,"secret",FileExtension.TXT);
+
+        assertEquals(rootDir,myFile.getRoot());
+    }
+
+    @Test
+    public void directoryTotalDiskUsageTest() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        File myFile = new File(myDir,"secret",40,true,FileExtension.TXT);
+        File myOtherFile = new File(rootDir,"assignment",60,true,FileExtension.PDF);
+
+        assertEquals(100,rootDir.getTotalDiskUsage());
+    }
+
+    @Test
+    public void directoryDeleteTest1() {
+        assertThrows(DeleteException.class, () -> {
+            Directory rootDir = new Directory("root");
+            File myFile = new File(rootDir,"secret",FileExtension.TXT);
+
+            rootDir.delete();
+        });
+    }
+
+    @Test
+    public void directoryDeleteTest2() {
+        assertThrows(DeleteException.class, () -> {
+            Directory rootDir = new Directory("root");
+            rootDir.setWritable(false);
+
+            rootDir.delete();
+        });
+    }
+
+    @Test
+    public void directoryDeleteTest3() {
+        Directory rootDir = new Directory("root");
+        Directory myDir = new Directory(rootDir,"documents");
+
+        myDir.delete();
+
+        assertTrue(myDir.isTerminated());
+        assertFalse(rootDir.hasAsItem(myDir));
+        assertEquals(0,rootDir.getNbItems());
+    }
+
+    @Test
+    public void directoryDefaultNameTest() {
+        Directory rootDir = new Directory("");
+
+        assertEquals("New-Directory",rootDir.getName());
+    }
+
+    // =================================================================================
+    // Tests: Link
+    // =================================================================================
+
+    @Test
+    public void linkConstructorTest() {
+        Directory rootDir = new Directory("root");
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+        Directory myDir = new Directory("documents");
+        Link myLink = new Link(myDir,"myLink",myFile);
+
+        assertEquals(myFile,myLink.getLinkedItem());
+    }
+
+    @Test
+    public void linkToLinkTest() {
+        assertThrows(LinkException.class, () -> {
+            Directory rootDir = new Directory("root");
+            File myFile = new File(rootDir,"secret",FileExtension.TXT);
+            Link fileLink = new Link(rootDir,"uselessLink",myFile);
+            Directory myDir = new Directory("documents");
+
+            Link myLink = new Link(myDir,"myLink",fileLink);
+        });
+    }
+
+    @Test
+    public void linkAbsolutePathTest() {
+        Directory rootDir = new Directory("root");
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+        Directory myDir = new Directory(rootDir,"documents");
+        Link myLink = new Link(myDir,"cool_link",myFile);
+
+        assertEquals("/root/documents/cool_link",myLink.getAbsolutePath());
+    }
+
+    @Test
+    public void linkDiskUsageTest() {
+        Directory rootDir = new Directory("root");
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+        Directory myDir = new Directory("documents");
+        Link myLink = new Link(myDir,"cool_link",myFile);
+
+        assertEquals(0,myLink.getTotalDiskUsage());
+    }
+
+    @Test
+    public void linkDeleteTest1() {
+        assertThrows(DeleteException.class, () -> {
+            Directory rootDir = new Directory("root");
+            File myFile = new File(rootDir,"secret",FileExtension.TXT);
+            Directory myDir = new Directory("documents");
+            Link myLink = new Link(myDir,"cool_link",myFile);
+
+            myLink.delete();
+
+            myLink.delete();
+        });
+    }
+
+    @Test
+    public void linkDeleteTest2() {
+        Directory rootDir = new Directory("root");
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+        Directory myDir = new Directory("documents");
+        Link myLink = new Link(myDir,"cool_link",myFile);
+
+        myLink.delete();
+
+        assertFalse(myDir.hasAsItem(myLink));
+        assertEquals(0,myDir.getNbItems());
+    }
+
+    @Test
+    public void linkInactiveTest() {
+        Directory rootDir = new Directory("root");
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+        Directory myDir = new Directory("documents");
+        Link myLink = new Link(myDir,"cool_link",myFile);
+
+        myFile.delete();
+
+        assertNull(myLink.getLinkedItem());
+    }
+
+    @Test
+    public void linkDefaultNameTest() {
+        Directory rootDir = new Directory("root");
+        File myFile = new File(rootDir,"secret",FileExtension.TXT);
+        Directory myDir = new Directory("documents");
+        Link myLink = new Link(myDir,"",myFile);
+
+        assertEquals("New-Link",myLink.getName());
     }
 }

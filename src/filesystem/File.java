@@ -292,8 +292,8 @@ public class File extends Item {
     @Override
     public void delete() throws DeleteException {
         if (canBeDeleted()) {
-            setTerminated(true);
             getParentDirectory().removeItem(this);
+            setTerminated(true);
         } else {
             throw new DeleteException("This file cannot be deleted!");
         }

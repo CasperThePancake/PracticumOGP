@@ -424,6 +424,7 @@ public class Directory extends Item {
     @Override
     public void delete() throws DeleteException {
         if (canBeDeleted()) {
+            getParentDirectory().removeItem(this);
             setTerminated(true);
         } else {
             throw new DeleteException("This directory cannot be deleted!");
