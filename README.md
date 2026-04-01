@@ -57,6 +57,6 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: getAbsolutePath() ⚡⚡
 - [x] Default names per soort ⚡⚡
 - [x] Deletion checks voor alle publieke methodes en methodes die andere Items als input nemen ⚡⚡⚡
-- [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
+- [x] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
 
 
