@@ -4,8 +4,6 @@ De soort uitwerking (totaal, nominaal, defensief) is hetzelfde als in practicum 
 BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit, namelijk bepaalde attributen en methodes (move, getRoot, isDirectOrIndirectChildOf, getTotalDiskUsage, ...)
 --> Maak een abstracte klasse Item waarvan ze overerven???
 
-- [x] Waar is Wim (this aged like fine wine)
-
 - [x] Fouten feedback practicum 1 aanpassen ⚡⚡ (Loïck)
 
 ## Superklasse (Item.java) _BEIDE_
